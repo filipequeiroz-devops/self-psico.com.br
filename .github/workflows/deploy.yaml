@@ -22,12 +22,13 @@ jobs: #o que vai ser feito
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} #variável de ambiente para a chave secreta AWS
           aws-region: us-east-1 #região da AWS
 
-        
+      - name: Ver estrutura de pastas #devido a erros no github actions, adicionei esse passo para verificar a estrutura de pastas e arquivos na máquina virtual, para garantir que os arquivos estão sendo enviados corretamente para o bucket S3
+        run: |
+          pwd
+          ls -R ou ls- 
+          
       - name: Enviar para o bucket s3
         run: | #comando para enviar os arquivos para o bucket S3 , equivalente ao aws s3 sync na linha de comando, excluindo a pasta .git  e .github para evitar enviar arquivos desnecessários para o bucket S3
             aws s3 sync ./src/application/ s3://selfpsico.com.br/
         
-      - name: Ver estrutura de pastas #devido a erros no github actions, adicionei esse passo para verificar a estrutura de pastas e arquivos na máquina virtual, para garantir que os arquivos estão sendo enviados corretamente para o bucket S3
-        run: |
-            pwd
-            ls -R
+     
