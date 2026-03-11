@@ -266,53 +266,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-/* 1️⃣ Enviar depoimento */
-document.getElementById("form-depoimento").addEventListener("submit", async function(e) {
-  e.preventDefault();
-
-  const form = e.target;
-  const data = {
-    nome: form.nome.value,
-    mensagem: form.mensagem.value,
-    estrelas: form.estrelas.value
-  };
-
-  await fetch("https://API_ID.execute-api.sa-east-1.amazonaws.com/depoimentos", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
-
-  alert("Depoimento enviado com sucesso!");
-  form.reset();
-  carregarDepoimentos();
-});
-
-/* 2️⃣ Carregar depoimentos */
-async function carregarDepoimentos() {
-  const res = await fetch("https://mes1e7p75k.execute-api.us-east-1.amazonaws.com/default/selfpsico/depoimentos");
-  const depoimentos = await res.json();
-
-  const div = document.getElementById("lista-depoimentos");
-  div.innerHTML = "";
-
-  depoimentos.forEach(d => {
-    div.innerHTML += `
-      <div class="card mb-3">
-        <div class="card-body">
-          <strong>${d.nome}</strong>
-          <p>${d.mensagem}</p>
-          <span>⭐ ${d.estrelas}</span>
-        </div>
-      </div>
-    `;
-  });
-}
-
-/* 3️⃣ Carregar ao abrir a página */
-carregarDepoimentos();
-</script>
-
 </body>
 </html>
