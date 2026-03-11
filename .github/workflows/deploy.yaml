@@ -24,6 +24,4 @@ steps:
     
   - name: Enviar para o bucket s3
     run: | #comando para enviar os arquivos para o bucket S3 , equivalente ao aws s3 sync na linha de comando, excluindo a pasta .git  e .github para evitar enviar arquivos desnecessários para o bucket S3
-        aws s3 sync . s3://selfpsico.com.br/ \ 
-        --exclude ".git/*" \ 
-        --exclude ".github/*" 
+        aws s3 sync ./src/application/* s3://selfpsico.com.br/
