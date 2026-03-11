@@ -2,7 +2,8 @@ name: Deploy para o bucket selfpsico.com.br #nome do workflow
 
 on:
   push: #ação que dispara o workflow
-    - master #branch afetada
+    branches:
+      - master #branch afetada
   
   workflow_dispatch: #permite rodar manualmente
 
