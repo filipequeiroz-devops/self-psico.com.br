@@ -1,57 +1,29 @@
-name: Deploy Diario de Noticias
+name: Deploy para o bucket selfpsico.com.br #nome do workflow
 
 on:
-  # Roda quando você der push na master
-  push:
-    branches: [ master ]
+  push: #ação que dispara o workflow
+    - master #branch afetada
   
-  # Permite rodar manualmente clicando num botão (pra testar)
-  workflow_dispatch:
+  workflow_dispatch: #permite rodar manualmente
 
-  # Agendamento: Roda todo dia às 08:00 UTC (Cron Job)
-  schedule:
-    - cron: '0 8 * * *'
+jobs: #o que vai ser feito
+  deploy: #ação 1
+    runs-on: ubuntu-lastest #definição do sistema operacional da máquina virtual
+  
+steps:
+  - name: Checkout do repositorio #Clona o repositorio para a máquina virtual
+    uses: actions/checkout@v3 #ação pré-definida do github para clonar o repositorio, equivalente ao git clone na linha de comando
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  - name: Configurar credencias AWS
+    uses: aws-actions/configure-aws-credentials@v1 #ação pré-definida do github para configurar as credenciais da AWS, equivalente ao aws configure na linha de comando
+    with:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} #variável de ambiente para a chave de acesso AWS
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} #variável de ambiente para a chave secreta AWS
+      aws-region: us-east-1 #região da AWS
 
-    steps:
-    # 1. Baixa seu código do GitHub para a máquina de automação
-    - name: Checkout do Código
-      uses: actions/checkout@v3
-
-    # 2. Instala o Python na máquina
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-
-    # 3. Instala as dependências
-    - name: Instalar Dependências
-      # Entra na pasta correta antes de rodar
-      run: |
-        cd "Static Site Generation (SSG)/app"
-        pip install -r requirements.txt
-
-    # 4. Roda o script para gerar o index.html novo
-    - name: Gerar Site Estático
-      env: 
-        NEWSAPIKEY: ${{ secrets.NEWS_API_KEY }}
-      run: |
-        cd "Static Site Generation (SSG)/app"
-        python SiteGenerator.py
-        # Verifica se o arquivo foi criado (debug)
-        ls -l index.html
-
-    # 5. Envia o arquivo para a EC2 (Deploy)
-    - name: Copiar HTML para EC2 via SCP
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST_DNS }}
-        username: ec2-user
-        key: ${{ secrets.EC2_SSH_KEY }}
-        # Pega o arquivo da pasta local e joga na pasta do servidor
-        source: "Static Site Generation (SSG)/app/index.html"
-        target: "/var/www/html":
-        strip_components: 2
+    
+  - name: Enviar para o bucket s3
+    run: | #comando para enviar os arquivos para o bucket S3 , equivalente ao aws s3 sync na linha de comando, excluindo a pasta .git  e .github para evitar enviar arquivos desnecessários para o bucket S3
+        aws s3 sync . s3://selfpsico.com.br/ \ 
+        --exclude ".git/*" \ 
+        --exclude ".github/*" 
