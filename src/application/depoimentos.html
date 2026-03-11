@@ -120,20 +120,25 @@ document.getElementById("form-depoimento").addEventListener("submit", async func
 });
 
 /* Carregar depoimentos */
+/* Carregar depoimentos atualizado */
 async function carregarDepoimentos() {
   const res = await fetch(API_URL);
   const depoimentos = await res.json();
-
   const div = document.getElementById("lista-depoimentos");
   div.innerHTML = "";
 
   depoimentos.forEach(d => {
-    let estrelasHtml = '';
-    for (let i = 1; i <= 5; i++) {
-      estrelasHtml += i <= d.estrelas
-        ? '<i class="bi bi-star-fill text-warning"></i>'
-        : '<i class="bi bi-star text-warning"></i>';
-    }
+    // Lógica das estrelas...
+    let respostaHtml = d.resposta_admin 
+      ? `<div class="mt-3 p-2 bg-light border-start border-4 border-success">
+           <strong>Resposta da Angela:</strong> <p class="mb-0">${d.resposta_admin}</p>
+         </div>` 
+      : "";
+
+    // Botão de responder (SÓ APARECE SE TIVER UM PARÂMETRO NA URL OU SENHA)
+    let btnResponder = location.hash === "#admin" 
+      ? `<button class="btn btn-sm btn-outline-secondary mt-2" onclick="responder('${d.id}')">Responder</button>` 
+      : "";
 
     div.innerHTML += `
       <div class="card mb-3 shadow-sm">
@@ -141,10 +146,30 @@ async function carregarDepoimentos() {
           <strong>${d.nome}</strong>
           <p>${d.mensagem}</p>
           <div>${estrelasHtml}</div>
+          ${respostaHtml}
+          ${btnResponder}
         </div>
       </div>
     `;
   });
+}
+
+async function responder(id) {
+  const senha = prompt("Digite a senha de administradora:");
+  const resposta = prompt("Digite sua resposta:");
+
+  if (resposta && senha) {
+    await fetch(API_URL, {
+      method: "PUT", // Ou POST, dependendo de como sua API foi feita
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        id: id, 
+        resposta_admin: resposta, 
+        admin_key: senha // A API deve validar essa senha
+      })
+    });
+    carregarDepoimentos();
+  }
 }
 
 
