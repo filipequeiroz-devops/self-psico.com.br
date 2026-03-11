@@ -10,18 +10,18 @@ jobs: #o que vai ser feito
   deploy: #ação 1
     runs-on: ubuntu-lastest #definição do sistema operacional da máquina virtual
   
-steps:
-  - name: Checkout do repositorio #Clona o repositorio para a máquina virtual
-    uses: actions/checkout@v3 #ação pré-definida do github para clonar o repositorio, equivalente ao git clone na linha de comando
+    steps:
+      - name: Checkout do repositorio #Clona o repositorio para a máquina virtual
+        uses: actions/checkout@v3 #ação pré-definida do github para clonar o repositorio, equivalente ao git clone na linha de comando
 
-  - name: Configurar credencias AWS
-    uses: aws-actions/configure-aws-credentials@v1 #ação pré-definida do github para configurar as credenciais da AWS, equivalente ao aws configure na linha de comando
-    with:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} #variável de ambiente para a chave de acesso AWS
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} #variável de ambiente para a chave secreta AWS
-      aws-region: us-east-1 #região da AWS
+      - name: Configurar credencias AWS
+        uses: aws-actions/configure-aws-credentials@v1 #ação pré-definida do github para configurar as credenciais da AWS, equivalente ao aws configure na linha de comando
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} #variável de ambiente para a chave de acesso AWS
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} #variável de ambiente para a chave secreta AWS
+          aws-region: us-east-1 #região da AWS
 
-    
-  - name: Enviar para o bucket s3
-    run: | #comando para enviar os arquivos para o bucket S3 , equivalente ao aws s3 sync na linha de comando, excluindo a pasta .git  e .github para evitar enviar arquivos desnecessários para o bucket S3
-        aws s3 sync ./src/application/* s3://selfpsico.com.br/
+        
+      - name: Enviar para o bucket s3
+        run: | #comando para enviar os arquivos para o bucket S3 , equivalente ao aws s3 sync na linha de comando, excluindo a pasta .git  e .github para evitar enviar arquivos desnecessários para o bucket S3
+            aws s3 sync ./src/application/* s3://selfpsico.com.br/
