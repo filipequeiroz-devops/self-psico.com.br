@@ -9,7 +9,7 @@ on:
 
 jobs: #o que vai ser feito
   deploy: #ação 1
-    runs-on: ubuntu-lastest #definição do sistema operacional da máquina virtual
+    runs-on: ubuntu-latest #definição do sistema operacional da máquina virtual
   
     steps:
       - name: Checkout do repositorio #Clona o repositorio para a máquina virtual
