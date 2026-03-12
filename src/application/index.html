@@ -11,102 +11,171 @@
 
     <style>
         :root {
-            --primary-color: #6A9C89; /* Verde sálvia calmante */
-            --secondary-color: #C4DAD2; /* Verde claro */
+            --primary-color: #6A9C89;
+            --secondary-color: #C4DAD2;
             --text-color: #333;
             --light-bg: #F5F7F8;
+            --dark-footer: #2c3e50; /* Cor do seu cabeçalho de rodapé antigo */
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        body {
-            font-family: 'Lato', sans-serif;
-            color: var(--text-color);
-        }
+        body { font-family: 'Lato', sans-serif; color: var(--text-color); overflow-x: hidden; }
+        h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; color: #2c3e50; }
 
-        h1, h2, h3, h4, h5 {
-            font-family: 'Playfair Display', serif;
-            color: #2c3e50;
-        }
-
-        /* Navbar */
+        /* Navbar Moderna */
         .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            padding: 20px 0;
+            background-color: transparent;
         }
+
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 10px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+        }
+
         .navbar-brand {
             font-weight: 700;
             color: var(--primary-color) !important;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
-        /* Hero Section (Topo) */
+        .nav-link {
+            font-weight: 400;
+            margin: 0 10px;
+            position: relative;
+            color: #444 !important;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { color: var(--primary-color) !important; }
+
+        /* Hero */
         .hero-section {
-            /* Imagem de fundo genérica de escritório/natureza - Substitua a URL depois */
-            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6)), url('images/logo.jpg') no-repeat center center;
+            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.7)), 
+                        url('images/logo.jpg') no-repeat center center;
             background-size: cover;
-            background-position: center;
-            height: 90vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
+            padding-top: 80px;
         }
 
-        .btn-custom {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            border: none;
-            transition: all 0.3s;
-        }
-        .btn-custom:hover {
-            background-color: #557c6d;
-            color: white;
-            transform: translateY(-2px);
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
         }
 
-        /* Seções Gerais */
-        .section-padding {
-            padding: 80px 0;
-        }
-        
-        .bg-light-custom {
-            background-color: var(--light-bg);
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Cards de Serviços */
+        /* Seções e Cards */
+        .section-padding { padding: 80px 0; }
+        .bg-light-custom { background-color: var(--light-bg); }
+
         .service-card {
             border: none;
-            transition: 0.3s;
+            transition: var(--transition);
             height: 100%;
             background: white;
-            padding: 20px;
+            padding: 30px;
+            border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
+
         .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
+
         .icon-box {
             font-size: 2.5rem;
             color: var(--primary-color);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        
-        /* Rodapé */
-        footer {
-            background-color: #2c3e50;
+
+        /* Botões */
+        .btn-custom {
+            background-color: var(--primary-color);
             color: white;
-            padding: 50px 0 20px;
+            padding: 12px 35px;
+            border-radius: 50px;
+            border: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(106, 156, 137, 0.3);
         }
+
+        .btn-custom:hover {
+            background-color: #557c6d;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(106, 156, 137, 0.4);
+            color: white;
+        }
+
+        /* ESTILO RECUPERADO E MELHORADO DO RODAPÉ (FOOTER) */
+        footer {
+            background-color: var(--dark-footer);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        footer h4, footer h5 {
+            color: white;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
         footer a {
-            color: #bdc3c7;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
+            transition: var(--transition);
         }
+
         footer a:hover {
             color: white;
+            padding-left: 5px;
         }
-        .social-icons i {
+
+        .social-icons a {
             font-size: 1.5rem;
-            margin-right: 15px;
+            margin-right: 20px;
+            display: inline-block;
+        }
+
+        .footer-logo {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid rgba(255,255,255,0.1);
+        }
+
+        /* Ajuste da frase citada */
+        .quote-section {
+            background-color: white;
+            padding: 60px 0;
+        }
+
+        @media (max-width: 991px) {
+            .navbar { background-color: white !important; padding: 10px 0; }
+            .hero-section { text-align: center; }
+            .hero-section .d-flex { justify-content: center; }
         }
     </style>
 </head>
@@ -116,22 +185,18 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Psicóloga Angela</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="bi bi-list fs-1"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link" href="#inicio">Início</a></li>
                     <li class="nav-item"><a class="nav-link" href="#sobre">Sobre Mim</a></li>
                     <li class="nav-item"><a class="nav-link" href="#servicos">Especialidades</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
                     <li class="nav-item"><a class="nav-link" href="depoimentos.html">Depoimentos</a></li>
-                    <li class="nav-item ms-2">
-                        <a href="#contato" class="btn btn-outline-success rounded-pill px-4">Agendar</a>
+                    <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                        <a href="#contato" class="btn btn-custom">Agendar</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/angelalimaselfpsico?igsh=Z3BsaTJhc25qajlu" target="_blank"><i class="bi bi-instagram"></i></a>
-                    <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/angela-alvez-161155180/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="bi bi-linkedin"></i></a>
-                    
                 </ul>
             </div>
         </div>
@@ -139,14 +204,14 @@
 
     <header id="inicio" class="hero-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-7">
-                    <h1 class="display-4 fw-bold mb-4">Acolhimento que nasce da experiência e da superação.</h1>
-                    <p class="lead mb-4">
-                        Cuide da sua saúde mental com quem tem vocação para ouvir
-                    </p>
-                    <a href="#contato" class="btn btn-custom btn-lg">Marcar Consulta</a>
-                    <a href="#sobre" class="btn btn-outline-secondary btn-lg ms-2 rounded-pill">Saiba Mais</a>
+            <div class="row align-items-center">
+                <div class="col-lg-7 fade-in-up">
+                    <h1 class="display-3 fw-bold mb-4">Acolhimento que nasce da <span style="color: var(--primary-color)">experiência</span>.</h1>
+                    <p class="lead mb-5 text-muted">Cuide da sua saúde mental com um atendimento humanizado e focado na sua jornada de autoconhecimento.</p>
+                    <div class="d-flex flex-column flex-sm-row gap-3">
+                        <a href="#contato" class="btn btn-custom btn-lg">Marcar Consulta</a>
+                        <a href="#sobre" class="btn btn-outline-secondary btn-lg rounded-pill">Saiba Mais</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -155,34 +220,28 @@
     <section id="sobre" class="section-padding">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-5 mb-4 mb-lg-0">
-                    <img src="images/foto_sobremim.jpg" alt="Psicóloga Angela" class="img-fluid rounded shadow">
+                <div class="col-lg-5 mb-5 mb-lg-0">
+                    <img src="images/foto_sobremim.jpg" alt="Psicóloga Angela" class="img-fluid rounded shadow img-modern">
                 </div>
                 <div class="col-lg-7 ps-lg-5">
-                    <h6 class="text-uppercase text-muted ls-1">Sobre Mim</h6>
+                    <h6 class="text-uppercase text-muted ls-1 mb-3">Sobre Mim</h6>
                     <h2 class="mb-4">Olá, eu sou a Angela</h2>
-                    <p class="lead text-muted">Angela Cristina de Lima Alves  </p>
-                    <p class="lead text-muted">Psicóloga (FIG(Faculdades Integradas De Guarulhos)  </p>
-                    <p class="lead text-muted">Especialista em Psicoterpia (Psicanálise Freudiana 2002)  </p>
+                    <div class="mb-4">
+                        <p class="lead mb-1 fw-bold">Angela Cristina de Lima Alves</p>
+                        <p class="text-muted mb-0">Psicóloga (FIG - Guarulhos)</p>
+                        <p class="text-muted">Especialista em Psicanálise Freudiana</p>
+                    </div>
                     <p>
-                        Formada em Psicologia pela FIG - Guarulhos (2002), descobriu a vocação pela psicologia por conta do sonho em ser psiquiatra, devido não ter conseguido ingressar na medicina, e visto que a psicologia chegaria mais próximo a seu sonho então, decide ingressar nesta mais fantástica experiência. 
-
+                        Formada em Psicologia pela FIG - Guarulhos (2002), descobriu a vocação pela psicologia por conta do sonho em ser psiquiatra, devido não ter conseguido ingressar na medicina, e visto que a psicologia chegaria mais próximo a seu sonho então, decide ingressar nesta mais fantástica experiência.
                         Durante a faculdade estagiou em uma empresa de ônibus como palestrante, lecionou em escola, realizou trabalhos de palestras religiosas e também em terapia familiar, infantil e individual. Com uma experiência incrível neste caminhar como estagiária no Hospital Psiquiátrico que só me fez sentir mais amor e desejo em continuar nesta jornada que tenho tanto amor e respeito.  
-
                         Após formada, começou a estudar para concursos públicos, passando a ter um enorme desejo em Ingressar como psicóloga na Fundação CASA (antiga FEBEM):no entanto antes de ingressar em uma visita a Fundação tomou ciência que não seria a melhor escolha naquele momento e decidiu não seguir; Assim abre uma Clínica Psicológica (2003), foi um sucesso pois ali me encontrava e se encantava cada vez mais.
-                        Mas o que não contava era com uma fatalidade em 2010, quando perde um dos seres humanos mais importante de sua vida (mãe), visto que naquele momento estava tão frágil e ao mesmo tempo tão incapaz de se cuidar ou cuidar de alguém, decide fechar a clínica e se fortalecer novamente . 
-
-                        Ingressa em uma empresa de saúde e daí em diante novas experiências acontecem e novamente se redescobrindo mas, com uma necessidade incrível em retomar sua verdadeira vocação  atender como psicóloga, pois, com tudo percebeu o quanto ama e está em suas veias esta profissão a qual tem tanta admiração e respeito hoje permaneço atendendo nesta empresa de saúde que me abriu um novo horizonte e na clínica Self-Psico que venho me dedicando e com certeza aprendendo ainda mais, desenvolver meu trabalho sempre dando o melhor que posso de tudo que aprendi nesses 23 anos de profissão, poderia ficar horas escrevendo e falando sobre minha trajetória mas, vou definir em uma só palavra *GRATIDÃO*.   
-                        
-                        Atualmente, concilia trabalho social  com a Psicanálise Freudiana na Clínica Self-Psico, convênio de saúde sami e sulamérica.
+                        Mas o que não contava era com uma fatalidade em 2010, quando perde um dos seres humanos mais importante de sua vida (mãe), visto que naquele momento estava tão frágil e ao mesmo tempo tão incapaz de se cuidar ou cuidar de alguém, decide fechar a clínica e se fortalecer novamente .
+                        Ingressa em uma empresa de saúde e daí em diante novas experiências acontecem e novamente se redescobrindo mas, com uma necessidade incrível em retomar sua verdadeira vocação  atender como psicóloga, pois, com tudo percebeu o quanto ama e está em suas veias esta profissão a qual tem tanta admiração e respeito hoje permaneço atendendo nesta empresa de saúde que me abriu um novo horizonte e na clínica Self-Psico que venho me dedicando e com certeza aprendendo ainda mais, desenvolver meu trabalho sempre dando o melhor que posso de tudo que aprendi nesses 23 anos de profissão, poderia ficar horas escrevendo e falando sobre minha trajetória mas, vou definir em uma só palavra *GRATIDÃO*.  
+                        Atualmente, concilia trabalho social  com a Psicanálise Freudiana na Clínica Self-Psico, convênio de saúde sami e sulamérica.
                     </p>
-                    <!--
-                    <p>
-                        [Outro parágrafo sobre a missão dela ou valores profissionais.]
-                    </p> -->
-                    
                     <div class="mt-4">
-                        <p><strong>CRP:</strong> 06/71189 </p> </div>
+                        <span class="badge bg-light text-dark p-2 border">CRP: 06/71189</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -198,73 +257,98 @@
                 <div class="col-md-4">
                     <div class="service-card text-center">
                         <div class="icon-box"><i class="bi bi-person-heart"></i></div>
-                        <h5>[Especialidade 1]</h5>
-                        <p class="text-muted small">Ex: Terapia Individual. Focada em ansiedade, depressão e autoconhecimento para adultos.</p>
+                        <h5>Terapia Individual</h5>
+                        <p class="text-muted small">Focada em ansiedade, depressão e autoconhecimento para adultos buscando equilíbrio emocional.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="service-card text-center">
                         <div class="icon-box"><i class="bi bi-people"></i></div>
-                        <h5>[Especialidade 2]</h5>
-                        <p class="text-muted small">Ex: Terapia de Casal ou Familiar. Melhoria da comunicação e resolução de conflitos.</p>
+                        <h5>Terapia de Casal</h5>
+                        <p class="text-muted small">Melhoria da comunicação, fortalecimento de laços e resolução de conflitos familiares.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="service-card text-center">
                         <div class="icon-box"><i class="bi bi-laptop"></i></div>
-                        <h5>[Atendimento Online]</h5>
-                        <p class="text-muted small">Realize suas sessões no conforto da sua casa através de videochamada segura.</p>
+                        <h5>Atendimento Online</h5>
+                        <p class="text-muted small">Realize suas sessões no conforto da sua casa através de videochamada segura e sigilosa.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-white text-center">
+    <section class="quote-section text-center">
         <div class="container">
-            <blockquote class="blockquote">
-                <p class="mb-3 fst-italic">"O que consome sua mente controla sua vida"</p>
-                <footer class="blockquote-footer">Autor Desconhecido</footer>
+            <blockquote class="blockquote mb-0">
+                <p class="display-6 fst-italic mb-3">"O que consome sua mente controla sua vida"</p>
+                <footer class="blockquote-footer mt-2">Autor Desconhecido</footer>
             </blockquote>
         </div>
     </section>
 
     <footer id="contato">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h4 class="mb-3">Psicóloga Angela</h4>
-                    <p class="small text-white-50">
-                        <img src="images/logo.jpg" alt="Psicóloga Angela" class="img-fluid rounded" 
-                        style="width: 150px; height: 150px; margin-top: -13px; object-fit: cover;">
-                    </p>
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h4>Psicóloga Angela</h4>
+                    <img src="images/logo.jpg" alt="Logo Self-Psico" class="footer-logo mb-3">
                 </div>
-                <div class="col-lg-4 mb-4">
-                    <h5 class="mb-3">Contato</h5>
-                    <ul class="list-unstyled text-white-50">
-                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> <a href="https://maps.app.goo.gl/gNC4wGfBfpmw69sn8">tenente ananias, 78, Parque Santos Dumont, Guarulhos/SP</li></a> 
-                        <li class="mb-2"><i class="bi bi-whatsapp me-2"> </i> <a href="https://api.whatsapp.com/send/?phone=5511970655343&text&type=phone_number&app_absent=0&utm_source=ig"> 11 97065-5343 </li> </a> 
-                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> clinicaselfpsico@gmail.com </li>
+                <div class="col-lg-4">
+                    <h5>Contato</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+                            <a href="https://maps.google.com" target="_blank">Tenente Ananias, 78, Pq. Santos Dumont, Guarulhos/SP</a>
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-whatsapp me-2 text-primary"></i>
+                            <a href="https://wa.me/5511970655343">11 97065-5343</a>
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-envelope-fill me-2 text-primary"></i>
+                            clinicaselfpsico@gmail.com
+                        </li>
                     </ul>
                 </div>
-                <div class="col-lg-4 mb-4">
-                    <h5 class="mb-3">Redes Sociais</h5>
-                    <p class="small text-white-50">Siga-me para acompanhar conteúdos sobre saúde mental.</p>
+                <div class="col-lg-4">
+                    <h5>Redes Sociais</h5>
+                    <p class="small text-white-50 mb-4">Siga-me para acompanhar conteúdos sobre saúde mental e bem-estar.</p>
                     <div class="social-icons">
-                        <a href="https://www.instagram.com/angelalimaselfpsico?igsh=Z3BsaTJhc25qajlu" target="_blank"><i class="bi bi-instagram"></i></a>
-                        <a href="https://www.linkedin.com/in/angela-alvez-161155180/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://instagram.com/angelalimaselfpsico" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
             </div>
-            <hr class="border-secondary mt-4">
-            <div class="row">
-                <div class="col-md-12 text-center small text-white-50">
-                    &copy; 2025 Psicóloga Angela. Todos os direitos reservados.
-                </div>
+            <hr class="my-5 border-white opacity-10">
+            <div class="text-center small text-white-50">
+                © 2025 Psicóloga Angela. Todos os direitos reservados.
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Muda a navbar ao rolar
+        window.addEventListener('scroll', function () {
+            const nav = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Fecha menu mobile
+        const navLinks = document.querySelectorAll('.nav-link');
+        const menuToggle = document.getElementById('navbarNav');
+        const bsCollapse = new bootstrap.Collapse(menuToggle, {toggle:false});
+        navLinks.forEach((l) => {
+            l.addEventListener('click', () => { 
+                if (window.innerWidth < 992) bsCollapse.hide();
+            });
+        });
+    </script>
 </body>
 </html>

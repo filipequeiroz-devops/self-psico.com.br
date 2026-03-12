@@ -1,227 +1,307 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Psicóloga Angela | Saúde Mental e Bem-estar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depoimentos | Psicóloga Angela</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
-<style>
-:root {
-  --primary-color: #6A9C89;
-  --secondary-color: #C4DAD2;
-  --text-color: #333;
-  --light-bg: #F5F7F8;
-}
-body { font-family: 'Lato', sans-serif; color: var(--text-color); }
-h1,h2,h3,h4,h5 { font-family: 'Playfair Display', serif; color: #2c3e50; }
-.section-padding { padding: 80px 0; }
-.bg-light-custom { background-color: var(--light-bg); }
-.btn-custom {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 12px 30px;
-  border-radius: 30px;
-}
-.btn-custom:hover { background-color: #557c6d; }
-</style>
+    <style>
+        :root {
+            --primary-color: #6A9C89;
+            --secondary-color: #C4DAD2;
+            --text-color: #333;
+            --light-bg: #F5F7F8;
+            --dark-footer: #2c3e50;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        body { font-family: 'Lato', sans-serif; color: var(--text-color); overflow-x: hidden; background-color: white; }
+        h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; color: #2c3e50; }
+
+        /* Navbar Moderna */
+        .navbar {
+            transition: var(--transition);
+            padding: 20px 0;
+            background-color: white; /* Começa branca em páginas internas para leitura */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.4rem;
+        }
+
+        .nav-link {
+            font-weight: 400;
+            margin: 0 10px;
+            position: relative;
+            color: #444 !important;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: 0; left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { color: var(--primary-color) !important; }
+
+        /* Estilo da Seção */
+        .section-padding { padding: 120px 0 80px; }
+
+        /* Botões */
+        .btn-custom {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 50px;
+            border: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(106, 156, 137, 0.3);
+        }
+
+        .btn-custom:hover {
+            background-color: #557c6d;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(106, 156, 137, 0.4);
+            color: white;
+        }
+
+        /* Cards de Depoimentos */
+        .card-depoimento {
+            border: none;
+            border-radius: 15px;
+            transition: var(--transition);
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .card-depoimento:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-footer);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        footer h4, footer h5 { color: white; margin-bottom: 25px; font-weight: 700; }
+        footer a { color: rgba(255, 255, 255, 0.7); text-decoration: none; transition: var(--transition); }
+        footer a:hover { color: white; padding-left: 5px; }
+        
+        .footer-logo {
+            width: 120px; height: 120px;
+            object-fit: cover; border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 991px) {
+            .navbar { padding: 10px 0; }
+        }
+    </style>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg fixed-top">
+
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Psicóloga Angela</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <a class="navbar-brand" href="index.html">Psicóloga Angela</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="bi bi-list fs-1"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="#inicio">Início</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#sobre">Sobre Mim</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#servicos">Especialidades</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
-                    <li class="nav-item"><a class="nav-link" href="depoimentos.html">Depoimentos</a></li>
-                    <li class="nav-item ms-2">
-                        <a href="#contato" class="btn btn-outline-success rounded-pill px-4">Agendar</a>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+                    <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                        <a href="https://api.whatsapp.com/send/?phone=5511970655343" class="btn btn-custom">Agendar</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/angelalimaselfpsico?igsh=Z3BsaTJhc25qajlu" target="_blank"><i class="bi bi-instagram"></i></a>
-                    <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/angela-alvez-161155180/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="bi bi-linkedin"></i></a>
-                    
+                    <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/angelalimaselfpsico" target="_blank"><i class="bi bi-instagram"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/angela-alvez-161155180/" target="_blank"><i class="bi bi-linkedin"></i></a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-<!-- HERO -->
-<header id="inicio" class="hero-section">
-  <div class="container">
-    <h1 class="display-4 fw-bold">Acolhimento que nasce da experiência</h1>
-    <p class="lead">Cuide da sua saúde mental com quem tem vocação para ouvir</p>
-  </div>
-</header>
+    <section id="depoimentos" class="section-padding">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Depoimentos</h2>
+                <p class="text-muted">A jornada de quem já passou pelo processo terapêutico</p>
+            </div>
 
-<!-- ================= DEPOIMENTOS ================= -->
-<section id="depoimentos" class="section-padding">
-  <div class="container">
+            <div id="lista-depoimentos" class="row g-4">
+                </div>
 
-    <div class="text-center mb-5">
-      <h2>Depoimentos</h2>
-      <p class="text-muted">O que dizem sobre o atendimento</p>
-    </div>
+            <hr class="my-5 opacity-10">
 
-    <!-- LISTA -->
-    <div id="lista-depoimentos"></div>
-
-    <hr class="my-5">
-
-    <!-- FORM -->
-    <h4 class="mb-3">Deixe seu depoimento</h4>
-    <form id="form-depoimento">
-      <div class="mb-3">
-        <input type="text" name="nome" class="form-control" placeholder="Seu nome" required>
-      </div>
-
-      <div class="mb-3">
-        <textarea name="mensagem" class="form-control" placeholder="Seu depoimento" required></textarea>
-      </div>
-
-      <div class="mb-3">
-        <select name="estrelas" class="form-select" required>
-          <option value="">Avaliação</option>
-          <option value="5">⭐⭐⭐⭐⭐</option>
-          <option value="4">⭐⭐⭐⭐</option>
-          <option value="3">⭐⭐⭐</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-custom">Enviar depoimento</button>
-    </form>
-
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer id="contato" class="text-center py-4 bg-dark text-white">
-  © 2025 Psicóloga Angela
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-const API_URL = "https://mes1e7p75k.execute-api.us-east-1.amazonaws.com/default/selfpsico";
-
-/* Enviar depoimento (Paciente) */
-document.getElementById("form-depoimento").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const form = e.target;
-  const data = {
-    nome: form.nome.value,
-    mensagem: form.mensagem.value,
-    estrelas: parseInt(form.estrelas.value)
-  };
-
-  try {
-    await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-    alert("Depoimento enviado com sucesso!");
-    form.reset();
-    carregarDepoimentos();
-  } catch (err) {
-    console.error("Erro ao enviar:", err);
-  }
-});
-
-/* Carregar depoimentos atualizado */
-async function carregarDepoimentos() {
-  try {
-    const res = await fetch(API_URL);
-    const depoimentos = await res.json();
-    const div = document.getElementById("lista-depoimentos");
-    div.innerHTML = "";
-
-    depoimentos.forEach(d => {
-      // FIX: Gerar o HTML das estrelas que estava faltando
-      let estrelasHtml = '';
-      const numEstrelas = parseInt(d.estrelas) || 0;
-      for (let i = 1; i <= 5; i++) {
-        estrelasHtml += i <= numEstrelas
-          ? '<i class="bi bi-star-fill text-warning"></i>'
-          : '<i class="bi bi-star text-warning"></i>';
-      }
-
-      let respostaHtml = d.resposta_admin 
-        ? `<div class="mt-3 p-3 bg-light border-start border-4 border-success" style="border-radius: 4px;">
-             <small class="text-muted d-block mb-1">Resposta da Angela:</small>
-             <p class="mb-0 italic">"${d.resposta_admin}"</p>
-           </div>` 
-        : "";
-
-      // Botão de responder (Aparece se a URL terminar em #admin)
-      let btnResponder = window.location.hash === "#admin" 
-        ? `<button class="btn btn-sm btn-outline-secondary mt-3" onclick="responder('${d.id}')">Responder</button>` 
-        : "";
-
-      div.innerHTML += `
-        <div class="card mb-3 shadow-sm border-0">
-          <div class="card-body">
-            <h6 class="card-title fw-bold mb-1">${d.nome}</h6>
-            <div class="mb-2">${estrelasHtml}</div>
-            <p class="card-text">${d.mensagem}</p>
-            ${respostaHtml}
-            ${btnResponder}
-          </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card card-depoimento p-4">
+                        <h4 class="mb-4">Deixe seu depoimento</h4>
+                        <form id="form-depoimento">
+                            <div class="mb-3">
+                                <input type="text" name="nome" class="form-control form-control-lg" placeholder="Seu nome" required>
+                            </div>
+                            <div class="mb-3">
+                                <textarea name="mensagem" class="form-control form-control-lg" rows="4" placeholder="Como foi sua experiência?" required></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <select name="estrelas" class="form-select form-select-lg" required>
+                                    <option value="">Avaliação (Estrelas)</option>
+                                    <option value="5">⭐⭐⭐⭐⭐</option>
+                                    <option value="4">⭐⭐⭐⭐</option>
+                                    <option value="3">⭐⭐⭐</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-custom btn-lg w-100">Enviar depoimento</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      `;
-    });
-  } catch (err) {
-    console.error("Erro ao carregar depoimentos:", err);
-    document.getElementById("lista-depoimentos").innerHTML = "<p>Erro ao carregar depoimentos.</p>";
-  }
-}
+    </section>
 
-/* Função para a Angela responder */
-async function responder(id) {
-  const senha = prompt("Digite a senha de administradora:");
-  if (!senha) return;
+    <footer>
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h4>Psicóloga Angela</h4>
+                    <img src="images/logo.jpg" alt="Logo" class="footer-logo">
+                </div>
+                <div class="col-lg-4">
+                    <h5>Contato</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li class="mb-2"><i class="bi bi-geo-alt-fill me-2 text-primary"></i> Guarulhos, São Paulo</li>
+                        <li class="mb-2"><i class="bi bi-whatsapp me-2 text-primary"></i> 11 97065-5343</li>
+                        <li><i class="bi bi-envelope-fill me-2 text-primary"></i> clinicaselfpsico@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 text-lg-end text-center">
+                    <h5>Redes Sociais</h5>
+                    <div class="social-icons h3">
+                        <a href="https://instagram.com/angelalimaselfpsico" target="_blank" class="me-3"><i class="bi bi-instagram"></i></a>
+                        <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-5 border-white opacity-10">
+            <div class="text-center small text-white-50">
+                © 2025 Psicóloga Angela. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
 
-  const resposta = prompt("Digite sua resposta para este paciente:");
-  if (!resposta) return;
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = "https://mes1e7p75k.execute-api.us-east-1.amazonaws.com/default/selfpsico";
 
-  try {
-    const res = await fetch(API_URL, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        id: id, 
-        resposta_admin: resposta, 
-        admin_key: senha 
-      })
-    });
+        /* Enviar depoimento */
+        document.getElementById("form-depoimento").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                nome: form.nome.value,
+                mensagem: form.mensagem.value,
+                estrelas: parseInt(form.estrelas.value)
+            };
 
-    if (res.status === 403) {
-      alert("Senha incorreta!");
-    } else {
-      alert("Resposta publicada!");
-      carregarDepoimentos();
-    }
-  } catch (err) {
-    alert("Erro ao salvar resposta.");
-    console.error(err);
-  }
-}
+            try {
+                await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+                alert("Depoimento enviado com sucesso!");
+                form.reset();
+                carregarDepoimentos();
+            } catch (err) { console.error(err); }
+        });
 
-// Iniciar carregamento
-carregarDepoimentos();
+        /* Carregar depoimentos */
+        async function carregarDepoimentos() {
+            try {
+                const res = await fetch(API_URL);
+                const depoimentos = await res.json();
+                const div = document.getElementById("lista-depoimentos");
+                div.innerHTML = "";
 
-// Listener para detectar quando você digita #admin na barra de endereço sem atualizar a página
-window.addEventListener('hashchange', carregarDepoimentos);
-</script>
+                depoimentos.forEach(d => {
+                    let estrelasHtml = '';
+                    for (let i = 1; i <= 5; i++) {
+                        estrelasHtml += i <= d.estrelas ? '<i class="bi bi-star-fill text-warning"></i>' : '<i class="bi bi-star text-warning"></i>';
+                    }
 
+                    let respostaHtml = d.resposta_admin 
+                        ? `<div class="mt-3 p-3 bg-light border-start border-4 border-success rounded">
+                             <small class="fw-bold text-success">Resposta da Angela:</small>
+                             <p class="mb-0 small italic">"${d.resposta_admin}"</p>
+                           </div>` : "";
+
+                    let btnResponder = window.location.hash === "#admin" 
+                        ? `<button class="btn btn-sm btn-outline-secondary mt-2" onclick="responder('${d.id}')">Responder</button>` : "";
+
+                    div.innerHTML += `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card card-depoimento h-100 p-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <strong class="h5 mb-0">${d.nome}</strong>
+                                        <div>${estrelasHtml}</div>
+                                    </div>
+                                    <p class="text-muted small">${d.mensagem}</p>
+                                    ${respostaHtml}
+                                    ${btnResponder}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) { console.error(err); }
+        }
+
+        async function responder(id) {
+            const senha = prompt("Senha da Administradora:");
+            if (!senha) return;
+            const resposta = prompt("Sua resposta:");
+            if (!resposta) return;
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: id, resposta_admin: resposta, admin_key: senha })
+                });
+                if (res.ok) { alert("Resposta publicada!"); carregarDepoimentos(); }
+                else { alert("Erro: Verifique a senha."); }
+            } catch (err) { console.error(err); }
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar');
+            window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+        });
+
+        carregarDepoimentos();
+        window.addEventListener('hashchange', carregarDepoimentos);
+    </script>
 </body>
 </html>
