@@ -2,42 +2,45 @@ import json
 import boto3
 import uuid
 from datetime import datetime
+from decimal import Decimal  # 1. IMPORTANTE: Adicionado para tratar números do Dynamo
+
+# 2. NOVA CLASSE: Converte Decimal para tipos que o JSON entende (int ou float)
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return int(obj) if obj % 1 == 0 else float(obj)
+        return super(DecimalEncoder, self).default(obj)
 
 # Configuração do DynamoDB
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('SiteAvaliacoes')
 
-# 🔐 DEFINA SUA SENHA AQUI (ou use Variáveis de Ambiente do Lambda)
 ADMIN_PASSWORD = "Angela123@"
 
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "GET,POST,PUT,OPTIONS" # Adicionado PUT
+    "Access-Control-Allow-Methods": "GET,POST,PUT,OPTIONS"
 }
 
 def lambda_handler(event, context):
     try:
-        # Pega o método de diferentes formas dependendo da config do API Gateway
         method = event.get("requestContext", {}).get("http", {}).get("method", 
                  event.get("httpMethod", ""))
 
-        # 🔹 PRE-FLIGHT (CORS)
         if method == "OPTIONS":
             return {"statusCode": 200, "headers": CORS_HEADERS, "body": ""}
 
-        # 🔹 GET → Listar depoimentos
         if method == "GET":
             response = table.scan()
-            # Ordenar por data (opcional)
             items = sorted(response.get("Items", []), key=lambda x: x.get('created_at', ''), reverse=True)
             return {
                 "statusCode": 200,
                 "headers": CORS_HEADERS,
-                "body": json.dumps(items)
+                # 3. AJUSTE: Adicionado cls=DecimalEncoder para não dar erro 500
+                "body": json.dumps(items, cls=DecimalEncoder)
             }
 
-        # 🔹 POST → Novo depoimento (Paciente)
         if method == "POST":
             body = json.loads(event.get("body", "{}"))
             item = {
@@ -45,7 +48,7 @@ def lambda_handler(event, context):
                 "nome": body.get("nome"),
                 "mensagem": body.get("mensagem"),
                 "estrelas": body.get("estrelas"),
-                "resposta_admin": None, # Inicia vazio
+                "resposta_admin": None,
                 "created_at": datetime.utcnow().isoformat()
             }
             table.put_item(Item=item)
@@ -55,11 +58,9 @@ def lambda_handler(event, context):
                 "body": json.dumps({"message": "Depoimento salvo"})
             }
 
-        # 🔹 PUT → Responder depoimento (Apenas Angela)
         if method == "PUT":
             body = json.loads(event.get("body", "{}"))
             
-            # 1. Verifica a senha
             if body.get("admin_key") != ADMIN_PASSWORD:
                 return {
                     "statusCode": 403,
@@ -67,7 +68,6 @@ def lambda_handler(event, context):
                     "body": json.dumps({"error": "Acesso negado: Senha incorreta"})
                 }
 
-            # 2. Atualiza apenas o campo de resposta no DynamoDB
             table.update_item(
                 Key={'id': body.get("id")},
                 UpdateExpression="set resposta_admin = :r",

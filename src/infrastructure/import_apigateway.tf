@@ -38,3 +38,16 @@ resource "aws_apigatewayv2_integration" "selfpsico-integration" {
       region                                    = "us-east-1"
       timeout_milliseconds                      = 30000
   }
+
+
+resource "aws_apigatewayv2_route" "route_depoimentos_post" {
+      api_id                                    = aws_apigatewayv2_api.selfpsico-API.id
+      route_key                                 = "POST /depoimentos"
+      target                                    = "integrations/${aws_apigatewayv2_integration.selfpsico-integration.id}"
+  }
+
+resource "aws_apigatewayv2_route" "route_depoimentos_get" {
+      api_id                                    = aws_apigatewayv2_api.selfpsico-API.id
+      route_key                                 = "GET /depoimentos"
+      target                                    = "integrations/${aws_apigatewayv2_integration.selfpsico-integration.id}"
+  }
