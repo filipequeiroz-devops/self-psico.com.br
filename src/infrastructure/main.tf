@@ -6,3 +6,12 @@ terraform {
     }
   }
 }
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "saopaulo"
+  region = "sa-east-1"
+}
