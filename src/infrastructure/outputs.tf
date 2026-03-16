@@ -3,11 +3,12 @@ output lambda_id {
 }
 
 output api_gateway_url {
-  value       = aws_api_gateway_rest_api.selfpsico.invoke_url
+   value      = "${aws_apigatewayv2_api.selfpsico-API.api_endpoint}/depoimentos"
   description = "API Gateway URL"
 }
 
+
 output s3_bucket_name {
-  value       = aws_s3_bucket.selfpsico.bucket
+  value       = aws_s3_bucket.selfpsicobucket.id
   description = "S3 Bucket Name"
 }

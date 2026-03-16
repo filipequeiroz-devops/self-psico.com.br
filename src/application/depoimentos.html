@@ -212,96 +212,114 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_URL = "https://mes1e7p75k.execute-api.us-east-1.amazonaws.com/default/selfpsico";
+    // Agora apontando diretamente para o recurso /depoimentos que você definiu no Terraform
+    const API_URL = "https://mes1e7p75k.execute-api.us-east-1.amazonaws.com/depoimentos";
 
-        /* Enviar depoimento */
-        document.getElementById("form-depoimento").addEventListener("submit", async function(e) {
-            e.preventDefault();
-            const form = e.target;
-            const data = {
-                nome: form.nome.value,
-                mensagem: form.mensagem.value,
-                estrelas: parseInt(form.estrelas.value)
-            };
+    /* Enviar depoimento (POST /depoimentos) */
+    document.getElementById("form-depoimento").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = {
+            nome: form.nome.value,
+            mensagem: form.mensagem.value,
+            estrelas: parseInt(form.estrelas.value)
+        };
 
-            try {
-                await fetch(API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
+        try {
+            const res = await fetch(API_URL, {
+                method: "POST", // O API Gateway vai direcionar para a rota POST que você importou
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
                 alert("Depoimento enviado com sucesso!");
                 form.reset();
                 carregarDepoimentos();
-            } catch (err) { console.error(err); }
-        });
+            } else {
+                alert("Erro ao enviar depoimento.");
+            }
+        } catch (err) { console.error("Erro no POST:", err); }
+    });
 
-        /* Carregar depoimentos */
-        async function carregarDepoimentos() {
-            try {
-                const res = await fetch(API_URL);
-                const depoimentos = await res.json();
-                const div = document.getElementById("lista-depoimentos");
-                div.innerHTML = "";
+    /* Carregar depoimentos (GET /depoimentos) */
+    async function carregarDepoimentos() {
+        try {
+            const res = await fetch(API_URL); // Método padrão é GET
+            const depoimentos = await res.json();
+            const div = document.getElementById("lista-depoimentos");
+            div.innerHTML = "";
 
-                depoimentos.forEach(d => {
-                    let estrelasHtml = '';
-                    for (let i = 1; i <= 5; i++) {
-                        estrelasHtml += i <= d.estrelas ? '<i class="bi bi-star-fill text-warning"></i>' : '<i class="bi bi-star text-warning"></i>';
-                    }
+            depoimentos.forEach(d => {
+                let estrelasHtml = '';
+                // Garantindo que estrelas seja tratado como número para o loop
+                const numEstrelas = parseInt(d.estrelas) || 0;
+                for (let i = 1; i <= 5; i++) {
+                    estrelasHtml += i <= numEstrelas ? '<i class="bi bi-star-fill text-warning"></i>' : '<i class="bi bi-star text-warning"></i>';
+                }
 
-                    let respostaHtml = d.resposta_admin 
-                        ? `<div class="mt-3 p-3 bg-light border-start border-4 border-success rounded">
-                             <small class="fw-bold text-success">Resposta da Angela:</small>
-                             <p class="mb-0 small italic">"${d.resposta_admin}"</p>
-                           </div>` : "";
+                let respostaHtml = d.resposta_admin 
+                    ? `<div class="mt-3 p-3 bg-light border-start border-4 border-success rounded">
+                         <small class="fw-bold text-success">Resposta da Angela:</small>
+                         <p class="mb-0 small italic">"${d.resposta_admin}"</p>
+                       </div>` : "";
 
-                    let btnResponder = window.location.hash === "#admin" 
-                        ? `<button class="btn btn-sm btn-outline-secondary mt-2" onclick="responder('${d.id}')">Responder</button>` : "";
+                let btnResponder = window.location.hash === "#admin" 
+                    ? `<button class="btn btn-sm btn-outline-secondary mt-2" onclick="responder('${d.id}')">Responder</button>` : "";
 
-                    div.innerHTML += `
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card card-depoimento h-100 p-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <strong class="h5 mb-0">${d.nome}</strong>
-                                        <div>${estrelasHtml}</div>
-                                    </div>
-                                    <p class="text-muted small">${d.mensagem}</p>
-                                    ${respostaHtml}
-                                    ${btnResponder}
+                div.innerHTML += `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card card-depoimento h-100 p-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <strong class="h5 mb-0">${d.nome}</strong>
+                                    <div>${estrelasHtml}</div>
                                 </div>
+                                <p class="text-muted small">${d.mensagem}</p>
+                                ${respostaHtml}
+                                ${btnResponder}
                             </div>
                         </div>
-                    `;
-                });
-            } catch (err) { console.error(err); }
-        }
+                    </div>
+                `;
+            });
+        } catch (err) { console.error("Erro no GET:", err); }
+    }
 
-        async function responder(id) {
-            const senha = prompt("Senha da Administradora:");
-            if (!senha) return;
-            const resposta = prompt("Sua resposta:");
-            if (!resposta) return;
+    /* Responder depoimento (PUT /depoimentos) */
+    async function responder(id) {
+        const senha = prompt("Senha da Administradora:");
+        if (!senha) return;
+        const resposta = prompt("Sua resposta:");
+        if (!resposta) return;
 
-            try {
-                const res = await fetch(API_URL, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id: id, resposta_admin: resposta, admin_key: senha })
-                });
-                if (res.ok) { alert("Resposta publicada!"); carregarDepoimentos(); }
-                else { alert("Erro: Verifique a senha."); }
-            } catch (err) { console.error(err); }
-        }
+        try {
+            const res = await fetch(API_URL, {
+                method: "PUT", // Vai cair na nova rota PUT que você configurou
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    id: id, 
+                    resposta_admin: resposta, 
+                    admin_key: senha 
+                })
+            });
+            if (res.ok) { 
+                alert("Resposta publicada!"); 
+                carregarDepoimentos(); 
+            } else { 
+                alert("Erro: Verifique a senha ou a permissão."); 
+            }
+        } catch (err) { console.error("Erro no PUT:", err); }
+    }
 
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.navbar');
-            window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
-        });
+    // Controle da Navbar ao rolar
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('.navbar');
+        window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+    });
 
-        carregarDepoimentos();
-        window.addEventListener('hashchange', carregarDepoimentos);
-    </script>
+    // Inicialização
+    carregarDepoimentos();
+    window.addEventListener('hashchange', carregarDepoimentos);
+</script>
 </body>
 </html>
