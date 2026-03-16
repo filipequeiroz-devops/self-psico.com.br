@@ -32,4 +32,11 @@ resource "aws_lambda_function" "selfpsico" {
     tracing_config {
         mode = "PassThrough"
     }
+
+      environment {
+        
+    variables = {
+      SENHA_ANGELA = aws_cognito_user_pool_client.client.id
+    }
+  }
 }

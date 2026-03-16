@@ -241,6 +241,27 @@
         } catch (err) { console.error("Erro no POST:", err); }
     });
 
+    async function deletarDepoimento(id) {
+    if (!confirm("Tem certeza que deseja apagar este depoimento?")) return;
+    
+    const senha = prompt("Senha da Administradora para DELETAR:");
+    if (!senha) return;
+
+    try {
+        const res = await fetch(API_URL, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: id, admin_key: senha })
+        });
+
+        if (res.ok) {
+            alert("Depoimento removido!");
+            carregarDepoimentos(); // Recarrega a lista
+        } else {
+            alert("Erro ao deletar. Verifique a senha.");
+        }
+    } catch (err) { console.error("Erro no DELETE:", err); }
+}
     /* Carregar depoimentos (GET /depoimentos) */
     async function carregarDepoimentos() {
         try {
@@ -265,7 +286,12 @@
 
                 let btnResponder = window.location.hash === "#admin" 
                     ? `<button class="btn btn-sm btn-outline-secondary mt-2" onclick="responder('${d.id}')">Responder</button>` : "";
-
+                
+                let btnDeletar = window.location.hash === "#admin" 
+                    ? `<button class="btn btn-sm btn-outline-danger mt-2 ms-2" onclick="deletarDepoimento('${d.id}')">
+                        <i class="bi bi-trash"></i>
+                    </button>` : "";
+                    
                 div.innerHTML += `
                     <div class="col-md-6 col-lg-4">
                         <div class="card card-depoimento h-100 p-3">

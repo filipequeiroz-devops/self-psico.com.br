@@ -74,11 +74,32 @@ def lambda_handler(event, context):
                 ExpressionAttributeValues={':r': body.get("resposta_admin")},
                 ReturnValues="UPDATED_NEW"
             )
+        
 
             return {
                 "statusCode": 200,
                 "headers": CORS_HEADERS,
                 "body": json.dumps({"message": "Resposta publicada!"})
+            }
+        
+        if method == "DELETE":
+            body = json.loads(event.get("body", "{}"))
+
+            if body.get("admin_key") != ADMIN_PASSWORD:
+                return {
+                    "statusCode": 403,
+                    "headers": CORS_HEADERS,
+                    "body": json.dumps({"error": "Acesso negado"})
+                }
+
+            table.delete_item(
+                Key={'id': body.get("id")}
+            )
+
+            return {
+                "statusCode": 200,
+                "headers": CORS_HEADERS,
+                "body": json.dumps({"message": "Depoimento removido com sucesso!"})
             }
 
         return {
