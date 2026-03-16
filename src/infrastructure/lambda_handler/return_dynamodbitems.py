@@ -1,8 +1,9 @@
 import json
 import boto3
 import uuid
+import os # Adcionado para ler
 from datetime import datetime
-from decimal import Decimal  # 1. IMPORTANTE: Adicionado para tratar números do Dynamo
+from decimal import Decimal  
 
 # 2. NOVA CLASSE: Converte Decimal para tipos que o JSON entende (int ou float)
 class DecimalEncoder(json.JSONEncoder):
@@ -15,7 +16,7 @@ class DecimalEncoder(json.JSONEncoder):
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('SiteAvaliacoes')
 
-ADMIN_PASSWORD = "Angela123@"
+ADMIN_PASSWORD = os.environ.get("SENHA_ANGELA") # Lê a variavei de ambiente "senha_angela" que foi criada a partir do arquivo variables.tf e variaveis.tfvars, omitidos no git
 
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",

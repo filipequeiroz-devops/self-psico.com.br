@@ -36,7 +36,7 @@ resource "aws_lambda_function" "selfpsico" {
       environment {
         
     variables = {
-      SENHA_ANGELA = aws_cognito_user_pool_client.client.id
+      SENHA_ANGELA = var.senha_angela
     }
   }
 }
