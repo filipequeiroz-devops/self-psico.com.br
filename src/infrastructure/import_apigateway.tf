@@ -19,6 +19,7 @@ resource "aws_apigatewayv2_api" "selfpsico-API" {
             "OPTIONS",
             "POST",
             "PUT",
+            "DELETE",
         ]
         allow_origins     = [
             "*",
@@ -65,3 +66,19 @@ resource "aws_apigatewayv2_route" "route_depoimentos_delete" {
       route_key                                 = "DELETE /depoimentos"
       target                                    = "integrations/${aws_apigatewayv2_integration.selfpsico-integration.id}"
   }
+
+#criando um no stage por questões de padronização, ainda que o stage "default" já exista
+  resource "aws_apigatewayv2_stage" "default" {
+  api_id      = aws_apigatewayv2_api.selfpsico-API.id
+  name        = "production" 
+  auto_deploy = true       
+}
+
+#esse estage possui os 4 metodos, portanto é necessario dar permissao para todos os metodos
+resource "aws_lambda_permission" "api_gw" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.selfpsico.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn = "${aws_apigatewayv2_api.selfpsico-API.execution_arn}/production/*"
+}
