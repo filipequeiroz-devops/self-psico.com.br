@@ -51,3 +51,17 @@ resource "aws_apigatewayv2_route" "route_depoimentos_get" {
       route_key                                 = "GET /depoimentos"
       target                                    = "integrations/${aws_apigatewayv2_integration.selfpsico-integration.id}"
   }
+
+#criando metodo novo - put
+resource "aws_apigatewayv2_route" "route_depoimentos_put" {
+      api_id                                    = aws_apigatewayv2_api.selfpsico-API.id
+      route_key                                 = "PUT /depoimentos"
+      target                                    = "integrations/${aws_apigatewayv2_integration.selfpsico-integration.id}"
+  }
+
+#criando metodo novo - delete
+resource "aws_apigatewayv2_route" "route_depoimentos_delete" {
+      api_id                                    = aws_apigatewayv2_api.selfpsico-API.id
+      route_key                                 = "DELETE /depoimentos"
+      target                                    = "integrations/${aws_apigatewayv2_integration.selfpsico-integration.id}"
+  }
