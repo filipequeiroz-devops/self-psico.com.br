@@ -291,7 +291,7 @@
                     ? `<button class="btn btn-sm btn-outline-danger mt-2 ms-2" onclick="deletarDepoimento('${d.id}')">
                         <i class="bi bi-trash"></i>
                     </button>` : "";
-                    
+
                 div.innerHTML += `
                     <div class="col-md-6 col-lg-4">
                         <div class="card card-depoimento h-100 p-3">
@@ -303,6 +303,7 @@
                                 <p class="text-muted small">${d.mensagem}</p>
                                 ${respostaHtml}
                                 ${btnResponder}
+                                ${btnDeletar}
                             </div>
                         </div>
                     </div>
